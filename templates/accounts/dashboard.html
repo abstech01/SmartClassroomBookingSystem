@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<p>Welcome, {{ request.user.get_full_name|default:request.user.username }}!</p>
+{% if request.user.profile %}
+<p><strong>Email:</strong> {{ request.user.email }}</p>
+<p><strong>Phone:</strong> {{ request.user.profile.phone }}</p>
+<p><strong>Campus:</strong> {{ request.user.profile.get_campus_display }}</p>
+{% endif %}
+<p><a href="{% url 'logout' %}">Logout</a></p>
+{% endblock %}
