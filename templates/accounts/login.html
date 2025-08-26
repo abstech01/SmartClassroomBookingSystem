@@ -7,20 +7,25 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
+    {% if form.fields.username %}
     <p>
         {{ form.username.label_tag }}<br>
         {{ form.username }} {{ form.username.errors }}
     </p>
+    {% endif %}
 
+    {% if form.fields.password %}
     <p>
         {{ form.password.label_tag }}<br>
         {{ form.password }} {{ form.password.errors }}
     </p>
+    {% endif %}
 
     <button type="submit">Login</button>
 </form>
 
 <p>
-    <a href="{% url 'register' %}">Create an account</a>
+    <a href="{% url 'register' %}">Create an account</a> |
+    <a href="{% url 'request_token' %}">Login with email token</a>
 </p>
 {% endblock %}

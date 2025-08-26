@@ -1,0 +1,25 @@
+﻿{% extends "base.html" %}
+{% block title %}Login with Email Token{% endblock %}
+
+{% block content %}
+<h1>Login with Email Token</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <p>
+        <label for="email">Email</label><br>
+        <input type="email" name="email" id="email" required>
+    </p>
+
+    <button type="submit">Send Login Token</button>
+</form>
+
+<p>
+    <a href="{% url 'login' %}">Back to normal login</a> |
+    <a href="{% url 'register' %}">Register</a>
+</p>
+{% endblock %}

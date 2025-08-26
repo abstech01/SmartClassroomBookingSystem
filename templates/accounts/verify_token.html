@@ -1,0 +1,25 @@
+﻿{% extends "base.html" %}
+{% block title %}Verify Login Token{% endblock %}
+
+{% block content %}
+<h1>Verify Login Token</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <p>
+        <label for="token">Enter Token</label><br>
+        <input type="text" name="token" id="token" required maxlength="10">
+    </p>
+
+    <button type="submit">Verify and Login</button>
+</form>
+
+<p>
+    <a href="{% url 'request_token' %}">Resend token</a> |
+    <a href="{% url 'login' %}">Back to normal login</a>
+</p>
+{% endblock %}
