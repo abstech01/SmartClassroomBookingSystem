@@ -2,24 +2,121 @@
 {% block title %}Login with Email Token{% endblock %}
 
 {% block content %}
-<h1>Login with Email Token</h1>
 
-<form method="post">
-    {% csrf_token %}
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    <p>
-        <label for="email">Email</label><br>
-        <input type="email" name="email" id="email" required>
-    </p>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <button type="submit">Send Login Token</button>
-</form>
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
 
-<p>
-    <a href="{% url 'login' %}">Back to normal login</a> |
-    <a href="{% url 'register' %}">Register</a>
-</p>
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 2.5rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-blue {
+            background-color: #4da6ff;
+            color: white;
+        }
+
+        .btn-grey {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Login Page</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <label for="email">Email Address</label>
+        <div class="input-group">
+            <span class="icon">📧</span>
+            <input type="email" id="email" name="email" placeholder="Enter email" required />
+        </div>
+        <div class="buttons">
+            <button type="submit" class="btn btn-blue">Send Verification Code</button>
+            <a href="{% url 'register' %}" type="button "class="btn btn-grey">Create Account</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
 {% endblock %}
