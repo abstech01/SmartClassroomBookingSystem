@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block title %}Confirm Booking{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title">Confirm booking</h5>
+                    <p class="text-muted mb-2"><strong>Room:</strong> {{ room.name }} ({{ room.campus.name }})</p>
+                    <p class="text-muted mb-3">
+                        <strong>When:</strong>
+                        {{ starts_at|date:"Y-m-d H:i" }} → {{ ends_at|date:"Y-m-d H:i" }}
+                    </p>
+
+                    {% if must_override %}
+                    <div class="alert alert-warning">
+                        A student booking exists in this slot. As staff, you can override — please provide a reason.
+                    </div>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Keep times fixed -->
+                        <input type="hidden" name="starts_at" value="{{ starts_raw }}">
+                        <input type="hidden" name="ends_at" value="{{ ends_raw }}">
+
+                        {% if is_staff_user %}
+                        <div class="mb-3">
+                            <label class="form-label">Override Comment (required only if overriding a student booking)</label>
+                            <textarea name="override_comment" rows="3" class="form-control" placeholder="Reason for override (if required)"></textarea>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                            <a href="{% url 'bookings:room_list' %}?starts_at={{ starts_raw|urlencode }}&ends_at={{ ends_raw|urlencode }}" class="btn btn-outline-secondary">Back</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

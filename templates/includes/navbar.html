@@ -1,0 +1,38 @@
+﻿{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-blur">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" href="{% url 'dashboard' %}">Smart Classroom</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Left side (optional page-level items) -->
+            <ul class="navbar-nav me-auto">
+                {% block navbar_left %}{% endblock %}
+            </ul>
+
+            <!-- Right side (auth) -->
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item d-none d-lg-block">
+                    <span class="nav-link disabled">Hello, {{ request.user.email }}</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'request_token' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

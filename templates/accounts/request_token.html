@@ -1,122 +1,64 @@
 ﻿{% extends "base.html" %}
-{% block title %}Login with Email Token{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
+<div class="min-vh-100 d-flex align-items-center bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-5">
+                <div class="text-center mb-3">
+                    <div class="mx-auto rounded-circle bg-primary bg-opacity-10 border border-primary border-opacity-25 d-flex align-items-center justify-content-center" style="width:64px;height:64px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="text-primary" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M2 6a6 6 0 1 1 12 0c0 2.01-1.086 3.77-2.73 4.73L11 14H5l-.27-3.27A5.996 5.996 0 0 1 2 6z"/>
+                        </svg>
+                    </div>
+                    <h1 class="h5 fw-semibold mt-3 mb-0">Smart Classroom Booking</h1>
+                    <p class="text-muted m-0">Login</p>
+                </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 p-md-5">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="email" class="form-label fw-semibold">Email Address:</label>
+                                <input type="email" id="email" name="email" class="form-control form-control-lg rounded-3" placeholder="SXXXXXXXX@student.uni.ac.us" required>
+                                <div class="invalid-feedback">Please enter a valid email.</div>
+                            </div>
 
-        .container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
-        }
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-3">Login with Token</button>
+                            </div>
 
-        h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+                            <div class="d-grid mt-3">
+                                <a href="{% url 'register' %}" class="btn btn-light btn-lg rounded-3 border">Create Account</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 0.75rem 2.5rem 0.75rem 2.5rem;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-
-        .input-group .icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .btn {
-            padding: 0.75rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        .btn-blue {
-            background-color: #4da6ff;
-            color: white;
-        }
-
-        .btn-grey {
-            background-color: #ccc;
-            color: #333;
-        }
-
-        @media (max-width: 500px) {
-            .container {
-                padding: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h2>Login Page</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% if error %}
-        <p style="color: red;">{{ error }}</p>
-        {% endif %}
-        <label for="email">Email Address</label>
-        <div class="input-group">
-            <span class="icon">📧</span>
-            <input type="email" id="email" name="email" placeholder="Enter email" required />
+            </div>
         </div>
-        <div class="buttons">
-            <button type="submit" class="btn btn-blue">Send Verification Code</button>
-            <a href="{% url 'register' %}" type="button "class="btn btn-grey">Create Account</a>
-        </div>
-    </form>
+    </div>
 </div>
-</body>
-</html>
 
+<script>
+    (function(){'use strict';
+        const forms=document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function(form){
+            form.addEventListener('submit',function(e){
+                if(!form.checkValidity()){e.preventDefault();e.stopPropagation();}
+                form.classList.add('was-validated');
+            },false);
+        });
+    })();
+</script>
 {% endblock %}

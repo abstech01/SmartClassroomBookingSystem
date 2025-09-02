@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ room.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <!-- Gallery (simple) -->
+            {% if room.photos.all %}
+            <div class="mb-3">
+                {% with first=room.photos.all|first %}
+                {% if first %}<img src="{{ first.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ room.name }}">{% endif %}
+                {% endwith %}
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                {% for p in room.photos.all %}
+                <img src="{{ p.image.url }}" alt="Photo" class="rounded" style="height:72px; width:auto;">
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-secondary">No photos available.</div>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 mb-1">{{ room.name }}</h3>
+                    <div class="text-muted small mb-3">{{ room.campus.name }} • Capacity: {{ room.capacity }}</div>
+                    <p class="text-muted">{{ room.description|default:"No description provided." }}</p>
+
+                    <!-- Placeholder for future availability/search/booking -->
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-primary disabled">Book this room (coming soon)</a>
+                        <a href="{% url 'bookings:room_list' %}" class="btn btn-outline-secondary">Back to rooms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

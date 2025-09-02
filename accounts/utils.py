@@ -1,34 +1,31 @@
 ﻿# accounts/utils.py
-import random, string
+import random
+from django.core.mail import send_mail
 from django.conf import settings
-from .models import SiteConfig
+import random
+from mailjet_rest import Client
+from django.conf import settings
+from .models import SystemConfig
 
 def generate_token():
-    letters = ''.join(random.choices(string.ascii_uppercase, k=4))
-    numbers = ''.join(random.choices(string.digits, k=3))
-    return letters + numbers
+    letters = ''.join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=4))
+    digits  = ''.join(random.choices("0123456789", k=3))
+    return f"{letters}{digits}"
 
-def send_login_token(email, token):
-    config = SiteConfig.get_config()
+def send_login_token(email: str, token: str):
+    cfg = SystemConfig.latest_enabled()  # <-- use this
+    if not cfg or not cfg.mailjet_api_key or not cfg.mailjet_secret_key or not cfg.sender_email:
+        print(f"[DEV] Token for {email}: {token}")
+        return True
 
-    if not config.mailjet_api_key or not config.mailjet_api_secret:
-        # Development fallback
-        if settings.DEBUG:
-            print(f"[DEV MODE] Login token for {email}: {token}")
-            return True
-        else:
-            raise Exception("Mailjet API keys are not configured in SiteConfig.")
-
-    from mailjet_rest import Client
-    mailjet = Client(auth=(config.mailjet_api_key, config.mailjet_api_secret), version='v3.1')
+    mj = Client(auth=(cfg.mailjet_api_key, cfg.mailjet_secret_key), version="v3.1")
     data = {
-        'Messages': [
-            {
-                "From": {"Email": config.from_email, "Name": "Smart Classroom Booking"},
-                "To": [{"Email": email}],
-                "Subject": "Your Login Code",
-                "TextPart": f"Your login code is {token}. It is valid for {config.token_expiry_minutes} minutes.",
-            }
-        ]
+        "Messages": [{
+            "From": {"Email": cfg.sender_email, "Name": "Smart Classroom Booking"},
+            "To": [{"Email": email}],
+            "Subject": "Your Login Code",
+            "TextPart": f"Your login code is {token}. It will expire in {cfg.token_expiry_minutes} minutes."
+        }]
     }
-    return mailjet.send.create(data=data)
+    resp = mj.send.create(data=data)
+    return resp.status_code in (200, 201)

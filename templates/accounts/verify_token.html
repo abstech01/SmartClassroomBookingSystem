@@ -1,25 +1,64 @@
 ﻿{% extends "base.html" %}
-{% block title %}Verify Login Token{% endblock %}
+{% block title %}Login Verification{% endblock %}
 
 {% block content %}
-<h1>Verify Login Token</h1>
+<div class="min-vh-100 d-flex align-items-center bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-5">
+                <div class="text-center mb-3">
+                    <div class="mx-auto rounded-circle bg-primary bg-opacity-10 border border-primary border-opacity-25 d-flex align-items-center justify-content-center" style="width:64px;height:64px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="text-primary" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M2 6a6 6 0 1 1 12 0c0 2.01-1.086 3.77-2.73 4.73L11 14H5l-.27-3.27A5.996 5.996 0 0 1 2 6z"/>
+                        </svg>
+                    </div>
+                    <h1 class="h5 fw-semibold mt-3 mb-0">Smart Classroom Booking</h1>
+                    <p class="text-muted m-0">Login Verification</p>
+                </div>
 
-<form method="post">
-    {% csrf_token %}
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 p-md-5">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
 
-    <p>
-        <label for="token">Enter Token</label><br>
-        <input type="text" name="token" id="token" required maxlength="10">
-    </p>
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="token" class="form-label fw-semibold">Token:</label>
+                                <input type="text" id="token" name="token" class="form-control form-control-lg rounded-3" placeholder="XXXXXXX" maxlength="7" required>
+                                <div class="invalid-feedback">Please enter your token.</div>
+                            </div>
 
-    <button type="submit">Verify and Login</button>
-</form>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-3">Login</button>
+                            </div>
 
-<p>
-    <a href="{% url 'request_token' %}">Resend token</a> |
-    <a href="{% url 'login' %}">Back to normal login</a>
-</p>
+                            <div class="d-grid mt-3">
+                                <a href="{% url 'request_token' %}" class="btn btn-light btn-lg rounded-3 border">Resend Token</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){'use strict';
+        const forms=document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function(form){
+            form.addEventListener('submit',function(e){
+                if(!form.checkValidity()){e.preventDefault();e.stopPropagation();}
+                form.classList.add('was-validated');
+            },false);
+        });
+    })();
+</script>
 {% endblock %}

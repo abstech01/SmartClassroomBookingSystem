@@ -1,12 +1,38 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
+
 {% block content %}
-<h1>Dashboard</h1>
-<p>Welcome, {{ request.user.get_full_name|default:request.user.username }}!</p>
-{% if request.user.profile %}
-<p><strong>Email:</strong> {{ request.user.email }}</p>
-<p><strong>Phone:</strong> {{ request.user.profile.phone }}</p>
-<p><strong>Campus:</strong> {{ request.user.profile.get_campus_display }}</p>
-{% endif %}
-<p><a href="{% url 'logout' %}">Logout</a></p>
+<div class="min-vh-100 d-flex align-items-center bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <h2 class="h4 fw-semibold text-dark">Welcome back!</h2>
+                    <p class="text-muted small mb-0">You are logged in as <strong>{{ request.user.email }}</strong>.</p>
+                </div>
+
+                <!-- Card -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <h5 class="card-title mb-3">Dashboard</h5>
+                        <p class="text-muted">This is where you’ll see your upcoming bookings, notifications, and account details once we build them in.</p>
+
+                        <!-- Example placeholder for bookings -->
+                        <div class="alert alert-info small">
+                            <strong>Note:</strong> No bookings yet. Once you start reserving rooms, they’ll appear here.
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="{% url 'logout' %}" class="btn btn-danger">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

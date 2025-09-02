@@ -1,21 +1,62 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}My Site{% endblock %}</title>
-    {% load static %}
-</head>
-<body>
-    <!-- Display messages -->
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Page content -->
+    <title>{% block title %}Smart Classroom{% endblock %}</title>
+    {% load static %}
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- App stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- Navbar include -->
+{% include "includes/navbar.html" %}
+
+<!-- Global messages -->
+<div class="container mt-3">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Main page content -->
+<main class="flex-grow-1 py-4">
     {% block content %}{% endblock %}
+</main>
+
+<!-- Footer include -->
+{% include "includes/footer.html" %}
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Auto-dismiss alerts -->
+<script>
+    window.addEventListener('load', () => {
+        document.querySelectorAll('.alert').forEach(a => {
+            setTimeout(() => {
+                if (a.classList.contains('show')) {
+                    const alert = new bootstrap.Alert(a);
+                    alert.close();
+                }
+            }, 5000);
+        });
+    });
+</script>
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>
