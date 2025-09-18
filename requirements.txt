@@ -1,5 +1,4 @@
-﻿pip~=25.2
-mailjet-rest~=1.5.1
+﻿mailjet-rest~=1.5.1
 Django~=5.2.5
 asgiref~=3.9.1
 sqlparse~=0.5.3
@@ -8,3 +7,6 @@ certifi~=2025.8.3
 urllib3~=2.5.0
 idna~=3.10
 charset-normalizer~=3.4.3
+django-unfold
+django-widget-tweaks
+Pillow
